@@ -290,7 +290,7 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
 	return;
     }
 
-    if (c_info->rank == 0 || run_mode->type == Collective )
+    if (c_info->rank < c_info->num_procs/2 )
 	sender = 1;
 
     MPI_Type_size(c_info->s_data_type, &s_size);
