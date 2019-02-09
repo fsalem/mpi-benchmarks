@@ -299,10 +299,9 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
     for (i = 0; i < N_BARR; i++)
 	MPI_Barrier(c_info->communicator);
 
+    res_time = MPI_Wtime();
     if (sender) {
 	MPI_Win_lock_all(0, c_info->WIN);
-
-	res_time = MPI_Wtime();
 	for (i = 0; i < iterations->n_sample; i++) {
 	    for (peer = c_info->num_procs/2; peer < c_info->num_procs; peer++) {
 		/* choose different target for each process to avoid congestion */
@@ -319,10 +318,9 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
 	}
 	ierr = MPI_Win_flush_all(c_info->WIN);
 	MPI_ERRHAND(ierr);
-	res_time = (MPI_Wtime() - res_time) / iterations->n_sample;
-
 	MPI_Win_unlock_all(c_info->WIN);
     }
+    res_time = (MPI_Wtime() - res_time) / iterations->n_sample;
     /* Synchronize origin and target processes */
     MPI_Barrier(c_info->communicator);
 
