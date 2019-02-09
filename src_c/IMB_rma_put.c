@@ -251,7 +251,7 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
         res_time = MPI_Wtime();
         for (i = 0; i < iterations->n_sample; i++) {
             for (peer = c_info->num_procs/2; peer < c_info->num_procs; peer++) {
-                /* choose different target for each process to avoid congestion */s
+                /* choose different target for each process to avoid congestion */
                 target = (peer + c_info->rank) % c_info->num_procs;
                 if (target < c_info->num_procs/2)
                     target += c_info->num_procs/2;
