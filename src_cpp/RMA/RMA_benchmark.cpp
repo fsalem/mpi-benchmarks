@@ -199,6 +199,23 @@ BENCHMARK(IMB_rma_All_put_all, All_put_all)
     return true;
 }
 
+void IMB_rma_Half_put_half(struct comm_info* c_info, int size,
+                         struct iter_schedule* ITERATIONS, MODES RUN_MODE, double* time) {
+    IMB_rma_put_half(c_info, size, ITERATIONS, RUN_MODE, time);
+}
+
+BENCHMARK(IMB_rma_Half_put_half, Half_put_half)
+{
+    descr->flags.insert(DEFAULT);
+    descr->flags.insert(SENDBUF_SIZE_I);
+    descr->flags.insert(RECVBUF_SIZE_I);
+    descr->flags.insert(COLLECTIVE);
+    descr->flags.insert(N_MODES_1);
+    descr->flags.insert(NON_AGGREGATE);
+    descr->flags.insert(PUT);
+    return true;
+}
+
 BENCHMARK(IMB_rma_get_all, One_get_all)
 {
     descr->flags.insert(DEFAULT);

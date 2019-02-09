@@ -378,6 +378,10 @@ void IMB_rma_put_all(struct comm_info* c_info, int size,
                      struct iter_schedule* iterations,
                      MODES run_mode, double* time);
 
+void IMB_rma_put_half(struct comm_info* c_info, int size,
+                     struct iter_schedule* iterations,
+                     MODES run_mode, double* time);
+
 void IMB_rma_get_all(struct comm_info* c_info, int size,
                      struct iter_schedule* iterations,
                      MODES run_mode, double* time);

@@ -1329,6 +1329,7 @@ void IMB_help()
         "One_put_all\n"
         "One_get_all\n"
         "All_put_all\n"
+	"Half_put_half\n"
         "All_get_all\n"
         "Put_local\n"
         "Get_local\n"
