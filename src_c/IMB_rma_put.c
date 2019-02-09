@@ -255,6 +255,8 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
                 target = (peer + c_info->rank) % c_info->num_procs;
                 if (target < c_info->num_procs/2)
                     target += c_info->num_procs/2;
+                if (target >= c_info->num_procs)
+                    target = c_info->num_procs-1;
                 ierr = MPI_Put((char*)c_info->s_buffer + i%iterations->s_cache_iter*iterations->s_offs,
                                s_num, c_info->s_data_type, target,
                                i%iterations->r_cache_iter*iterations->r_offs,
