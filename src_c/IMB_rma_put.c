@@ -290,7 +290,7 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
 	return;
     }
 
-    if (c_info->rank == 0 || run_mode->type == Collective)
+    if (c_info->rank == 0 || run_mode->type == Collective )
 	sender = 1;
 
     MPI_Type_size(c_info->s_data_type, &s_size);
@@ -306,7 +306,8 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
 	for (i = 0; i < iterations->n_sample; i++) {
 	    for (peer = 0; peer < c_info->num_procs; peer++) {
 		/* choose different target for each process to avoid congestion */
-		target = (peer + c_info->rank) % c_info->num_procs;
+		//target = (peer + c_info->rank) % c_info->num_procs;
+		target = peer;
 		if (target == c_info->rank)
 		    continue; /* do not put to itself*/
 		ierr = MPI_Put((char*)c_info->s_buffer + i%iterations->s_cache_iter*iterations->s_offs,
