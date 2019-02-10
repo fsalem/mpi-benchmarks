@@ -334,8 +334,7 @@ Input variables:
     if (timing[MAX].times[PURE] > 0.) {
 	if (Bmark->RUN_MODES[0].type == HalfCollective){
 	    peers = c_info->num_procs / 2;
-	    msgrate = (Bmark->scale_bw * SCALE * MAX_WIN_SIZE * peers) / timing[MAX].times[PURE];
-	    throughput = MEGA * msgrate * size;
+	    throughput = (Bmark->scale_bw * SCALE * MEGA * peers) * size / timing[MAX].times[PURE];
 	} else if (Bmark->RUN_MODES[0].type != ParallelTransferMsgRate)
             throughput = (Bmark->scale_bw * SCALE * MEGA) * size / timing[MAX].times[PURE];
 #ifndef MPIIO
