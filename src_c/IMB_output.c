@@ -207,7 +207,7 @@ Input variables:
             out_format = OUT_TIME_AND_BW;
         } else if (type == ParallelTransfer || type == SingleTransfer || type == SingleElementTransfer) {
             out_format = OUT_TIME_RANGE_AND_BW;
-        } else if (type == ParallelTransferMsgRate || type == HalfCollective) {
+        } else if (type == ParallelTransferMsgRate) {
             out_format = OUT_BW_AND_MSG_RATE;
         } else if (type == Collective) {
 #ifdef MPIIO
@@ -215,9 +215,13 @@ Input variables:
 #else
             out_format = OUT_TIME_RANGE;
 #endif
+        } else if (type == HalfCollective) {
+            out_format = OUT_TIME_RANGE_AND_BW;
         } else {
+        }
             out_format = OUT_SYNC;
         }
+        printf("type=%d, out_format=%d\n", type, out_format);
 
         if (header) {
             IMB_print_header(out_format, Bmark, c_info, BMODE);
