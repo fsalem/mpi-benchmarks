@@ -220,7 +220,6 @@ Input variables:
         } else {
             out_format = OUT_SYNC;
         }
-        printf("type=%d, out_format=%d\n", type, out_format);
 
         if (header) {
             IMB_print_header(out_format, Bmark, c_info, BMODE);
