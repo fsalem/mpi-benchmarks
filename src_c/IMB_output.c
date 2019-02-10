@@ -218,7 +218,6 @@ Input variables:
         } else if (type == HalfCollective) {
             out_format = OUT_TIME_RANGE_AND_BW;
         } else {
-        }
             out_format = OUT_SYNC;
         }
         printf("type=%d, out_format=%d\n", type, out_format);
