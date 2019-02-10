@@ -100,6 +100,8 @@ struct Bmark_descr {
                 return ParallelTransfer;
             case COLLECTIVE:
                 return Collective;
+            case HALF_COLLECTIVE:
+		return HalfCollective;
             case PARALLEL_TRANSFER_MSG_RATE:
                 return ParallelTransferMsgRate;
             case SYNC:
