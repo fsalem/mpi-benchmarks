@@ -209,7 +209,7 @@ BENCHMARK(IMB_rma_Half_put_half, Half_put_half)
     descr->flags.insert(DEFAULT);
     descr->flags.insert(SENDBUF_SIZE_I);
     descr->flags.insert(RECVBUF_SIZE_I);
-    descr->flags.insert(MULT_PASSIVE_TRANSFER);
+    descr->flags.insert(HALF_COLLECTIVE);
     descr->flags.insert(N_MODES_1);
     descr->flags.insert(NON_AGGREGATE);
     descr->flags.insert(PUT);

@@ -245,7 +245,6 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
     for (i = 0; i < N_BARR; i++)
         MPI_Barrier(c_info->communicator);
 
-    //printf("rank=%d, iters=%d, sender=%d, procs=%d\n", c_info->rank, iterations->n_sample, sender, c_info->num_procs);
     if (sender) {
         MPI_Win_lock_all(0, c_info->WIN);
 
@@ -258,7 +257,6 @@ void IMB_rma_put_half(struct comm_info* c_info, int size,
                     target += c_info->num_procs/2;
                 if (target >= c_info->num_procs)
                     target = c_info->num_procs-1;
-                //printf("rank=%d, iter=%d, peer=%d, target=%d\n", c_info->rank, i, peer, target);
                 ierr = MPI_Put((char*)c_info->s_buffer + i%iterations->s_cache_iter*iterations->s_offs,
                                s_num, c_info->s_data_type, target,
                                i%iterations->r_cache_iter*iterations->r_offs,

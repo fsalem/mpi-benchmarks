@@ -74,6 +74,7 @@ typedef enum {
     ParallelTransfer,
     ParallelTransferMsgRate,
     Collective,
+    HalfCollective,
     Sync,
     MultPassiveTransfer,
     SingleElementTransfer

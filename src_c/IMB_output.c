@@ -215,6 +215,8 @@ Input variables:
 #else
             out_format = OUT_TIME_RANGE;
 #endif
+        } else if (type == HalfCollective) {
+            out_format = OUT_TIME_RANGE_AND_BW;
         } else {
             out_format = OUT_SYNC;
         }
