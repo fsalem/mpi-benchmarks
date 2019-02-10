@@ -207,7 +207,7 @@ Input variables:
             out_format = OUT_TIME_AND_BW;
         } else if (type == ParallelTransfer || type == SingleTransfer || type == SingleElementTransfer) {
             out_format = OUT_TIME_RANGE_AND_BW;
-        } else if (type == ParallelTransferMsgRate) {
+        } else if (type == ParallelTransferMsgRate || type == HalfCollective) {
             out_format = OUT_BW_AND_MSG_RATE;
         } else if (type == Collective) {
 #ifdef MPIIO
@@ -215,8 +215,6 @@ Input variables:
 #else
             out_format = OUT_TIME_RANGE;
 #endif
-        } else if (type == HalfCollective) {
-            out_format = OUT_TIME_RANGE_AND_BW;
         } else {
             out_format = OUT_SYNC;
         }
@@ -334,7 +332,11 @@ Input variables:
 #endif // NBC || RMA
 
     if (timing[MAX].times[PURE] > 0.) {
-        if (Bmark->RUN_MODES[0].type != ParallelTransferMsgRate)
+	if (Bmark->RUN_MODES[0].type == HalfCollective){
+	    peers = c_info->num_procs / 2;
+	    msgrate = (Bmark->scale_bw * SCALE * MAX_WIN_SIZE * peers) / timing[MAX].times[PURE];
+	    throughput = MEGA * msgrate * size;
+	} else if (Bmark->RUN_MODES[0].type != ParallelTransferMsgRate)
             throughput = (Bmark->scale_bw * SCALE * MEGA) * size / timing[MAX].times[PURE];
 #ifndef MPIIO
         else {
