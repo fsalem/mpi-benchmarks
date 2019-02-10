@@ -264,6 +264,7 @@ struct Bmark_descr {
         types.insert(SINGLE_TRANSFER);
         types.insert(PARALLEL_TRANSFER);
         types.insert(COLLECTIVE);
+        types.insert(HALF_COLLECTIVE);
         types.insert(PARALLEL_TRANSFER_MSG_RATE);
         types.insert(SYNC);
         types.insert(SINGLE_ELEMENT_TRANSFER);
