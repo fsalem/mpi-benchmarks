@@ -293,7 +293,7 @@ Input variables:
     double defect = 0.;
 #endif
     memset(&timing, 0, MAX_TIME_ID * sizeof(timing[MIN]));
-    memset(&timing, 0, 1 * sizeof(timing[MIN]));
+    memset(&throughput, 0, 1 * sizeof(throughput[MIN]));
 
 
     if (c_info->g_sizes[group] <= 0) {
