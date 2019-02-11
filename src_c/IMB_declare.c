@@ -90,6 +90,8 @@ char* dbgf_name;
 
 double *all_times;
 
+double *all_throughputs;
+
 /*  STRINGS FOR OUTPUT   */
 char aux_string[out_fields*ow_format];
 

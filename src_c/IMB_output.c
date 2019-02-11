@@ -163,6 +163,7 @@ Input variables:
     int out_format;
 
     const int DO_OUT = (c_info->w_rank == 0) ? 1 : 0;
+    //const int DO_OUT = (c_info->w_rank == 0 || (Bmark->RUN_MODES[0].type == HalfCollective && c_info->w_rank < c_info->NP/2)) ? 1 : 0;
     const int GROUP_OUT = (c_info->group_mode > 0) ? 1 : 0;
 
     ierr = 0;
@@ -280,7 +281,7 @@ Input variables:
     int i, offset = 0, peers;
     static double MEGA = 1.0 / 1e6;
 
-    double throughput = 0.;
+    double throughput = 0., min_throughput = 0., max_throughput = 0., avg_throughput = 0.;
     double overlap = 0.;
     double t_pure = 0.;
     double t_ovrlp = 0.;
@@ -348,6 +349,46 @@ Input variables:
 #endif
     }
 
+
+/* To be moved in a seperate method */
+    const int DO_OUT = (c_info->w_rank == 0) ? 1 : 0;
+    const int GROUP_OUT = (c_info->group_mode > 0) ? 1 : 0;
+
+    ierr = 0;
+
+    if (DO_OUT) {
+        /* Fix IMB_1.0.1: NULL all_times before allocation */
+        IMB_v_free((void**)&all_throughputs);
+
+        all_throughputs = (double*)IMB_v_alloc(c_info->w_num_procs * Bmark->Ntimes * sizeof(double), "Output 2");
+#ifdef CHECK
+        if (!all_defect) {
+            all_defect = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
+            for (i = 0; i < c_info->w_num_procs; i++)
+                all_defect[i] = 0.;
+        }
+#endif
+    } /*if (DO_OUT)*/
+
+    /* collect all throughputs  */
+    ierr = MPI_Gather(throughput, Bmark->Ntimes, MPI_DOUBLE, all_throughputs, Bmark->Ntimes, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_ERRHAND(ierr);
+
+#ifdef CHECK
+    /* collect all defects */
+    ierr = MPI_Gather(&defect, 1, MPI_DOUBLE, all_defect, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_ERRHAND(ierr);
+#endif
+    min_throughput = all_throughputs[0], max_throughput = all_throughputs[0];
+    for (int i=0 ; i < Bmark->Ntimes ; i++ ){
+	if (all_throughputs[i] < min_throughput) min_throughput = all_throughputs[i];
+	if (all_throughputs[i] > max_throughput) max_throughput = all_throughputs[i];
+	avg_throughput+=all_throughputs[i];
+    }
+    avg_throughput/=Bmark->Ntimes;
+
+/* END */
+
     if (c_info->group_mode > 0) {
         IMB_edit_format(1, 0);
         sprintf(aux_string, format, group);
@@ -379,17 +420,17 @@ Input variables:
         switch (out_format) {
             case OUT_TIME_AND_BW:
                 IMB_edit_format(2, 2);
-                sprintf(aux_string + offset, format, size, n_sample, timing[MAX].times[PURE], throughput);
+                sprintf(aux_string + offset, format, size, n_sample, timing[MAX].times[PURE], avg_throughput);
                 break;
             case OUT_BW_AND_MSG_RATE:
                 IMB_edit_format(2, 1);
-                offset += sprintf(aux_string + offset, format, size, n_sample, throughput);
+                offset += sprintf(aux_string + offset, format, size, n_sample, avg_throughput);
                 sprintf(&(format[0]), "%%%d.0f", ow_format);
                 sprintf(aux_string + offset, format, msgrate);
                 break;
             case OUT_TIME_RANGE_AND_BW:
                 IMB_edit_format(2, 4);
-                sprintf(aux_string + offset, format, size, n_sample, timing[MIN].times[PURE], timing[MAX].times[PURE], timing[AVG].times[PURE], throughput);
+                sprintf(aux_string + offset, format, size, n_sample, timing[MIN].times[PURE], timing[MAX].times[PURE], timing[AVG].times[PURE], avg_throughput);
                 break;
             case OUT_TIME_RANGE:
                 IMB_edit_format(2, 3);

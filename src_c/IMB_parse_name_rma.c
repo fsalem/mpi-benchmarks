@@ -187,7 +187,7 @@ void IMB_set_bmark(struct Bench* bmark) {
         bmark->Benchmark = IMB_rma_put_half;
         type = HalfCollective;
         bmark->access = put;
-        bmark->RUN_MODES[0].AGGREGATE = 1;
+        bmark->RUN_MODES[0].AGGREGATE = -1;
     } else if (!strcmp(bmark->name, "all_get_all")) {
         bmark->N_Modes = 1;
         bmark->Benchmark = IMB_rma_get_all;
