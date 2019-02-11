@@ -281,7 +281,7 @@ Input variables:
     int i, offset = 0, peers;
     static double MEGA = 1.0 / 1e6;
 
-    double* throughput[1] = 0., min_throughput = 0., max_throughput = 0., avg_throughput = 0.;
+    double throughput[1], min_throughput = 0., max_throughput = 0., avg_throughput = 0.;
     double overlap = 0.;
     double t_pure = 0.;
     double t_ovrlp = 0.;
@@ -293,6 +293,7 @@ Input variables:
     double defect = 0.;
 #endif
     memset(&timing, 0, MAX_TIME_ID * sizeof(timing[MIN]));
+    memset(&timing, 0, 1 * sizeof(timing[MIN]));
 
 
     if (c_info->g_sizes[group] <= 0) {
