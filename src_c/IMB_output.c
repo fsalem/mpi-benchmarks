@@ -381,7 +381,8 @@ Input variables:
 #endif
     min_throughput = all_throughputs[0], max_throughput = all_throughputs[0];
     for (int i=0 ; i < Bmark->Ntimes ; i++ ){
-	printf("[%d] throughput %.2f\n", i, all_throughputs[i]);
+	printf("[%d] throughput %.2f\t", i, all_throughputs[i]);
+	if (i+1 == Bmark->Ntimes)printf("\n");
 	if (all_throughputs[i] < min_throughput) min_throughput = all_throughputs[i];
 	if (all_throughputs[i] > max_throughput) max_throughput = all_throughputs[i];
 	avg_throughput+=all_throughputs[i];
