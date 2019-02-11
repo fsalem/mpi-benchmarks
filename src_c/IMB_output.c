@@ -360,7 +360,7 @@ Input variables:
         /* Fix IMB_1.0.1: NULL all_throughputs before allocation */
         IMB_v_free((void**)&all_throughputs);
 
-        all_throughputs = (double*)IMB_v_alloc(c_info->w_num_procs * Bmark->Ntimes * sizeof(double), "Output 2");
+        all_throughputs = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
 #ifdef CHECK
         if (!all_defect) {
             all_defect = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
@@ -371,7 +371,7 @@ Input variables:
     } /*if (DO_OUT)*/
 
     /* collect all throughputs  */
-    ierr = MPI_Gather(throughput, Bmark->Ntimes, MPI_DOUBLE, all_throughputs, Bmark->Ntimes, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    ierr = MPI_Gather(throughput, 1, MPI_DOUBLE, all_throughputs, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_ERRHAND(ierr);
 
 #ifdef CHECK
