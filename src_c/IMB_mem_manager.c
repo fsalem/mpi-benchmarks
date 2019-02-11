@@ -467,6 +467,11 @@ In/Out     : c_info   | struct comm_info* | see comm_info.h
     all_defect = NULL;
 #endif
 
+    all_throughputs = NULL;
+#ifdef CHECK
+    all_defect = NULL;
+#endif
+
     IMB_init_errhand(c_info);
 
 }
@@ -932,6 +937,8 @@ In/out variables:
 #endif
     if (all_times)
         IMB_v_free((void**)&all_times);
+    if (all_throughputs)
+	IMB_v_free((void**)&all_throughputs);
 
 #ifdef CHECK
     if (all_defect)

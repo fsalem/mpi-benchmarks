@@ -215,6 +215,8 @@ typedef struct {
 
 extern double *all_times;
 
+extern double *all_throughputs;
+
 /* STRING FOR OUTPUT    */
 extern char aux_string[out_fields*ow_format];
 

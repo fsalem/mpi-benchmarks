@@ -357,7 +357,7 @@ Input variables:
     ierr = 0;
 
     if (DO_OUT) {
-        /* Fix IMB_1.0.1: NULL all_times before allocation */
+        /* Fix IMB_1.0.1: NULL all_throughputs before allocation */
         IMB_v_free((void**)&all_throughputs);
 
         all_throughputs = (double*)IMB_v_alloc(c_info->w_num_procs * Bmark->Ntimes * sizeof(double), "Output 2");
