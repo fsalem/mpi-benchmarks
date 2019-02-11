@@ -371,7 +371,7 @@ Input variables:
     } /*if (DO_OUT)*/
 
     /* collect all throughputs  */
-    ierr = MPI_Gather(throughput, 1, MPI_DOUBLE, all_throughputs, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    ierr = MPI_Gather(&throughput, 1, MPI_DOUBLE, all_throughputs, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_ERRHAND(ierr);
 
 #ifdef CHECK
@@ -381,6 +381,7 @@ Input variables:
 #endif
     min_throughput = all_throughputs[0], max_throughput = all_throughputs[0];
     for (int i=0 ; i < Bmark->Ntimes ; i++ ){
+	printf("[%d] throughput %.2f\n", i, all_throughputs[i]);
 	if (all_throughputs[i] < min_throughput) min_throughput = all_throughputs[i];
 	if (all_throughputs[i] > max_throughput) max_throughput = all_throughputs[i];
 	avg_throughput+=all_throughputs[i];
