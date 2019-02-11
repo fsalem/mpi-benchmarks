@@ -281,7 +281,7 @@ Input variables:
     int i, offset = 0, peers;
     static double MEGA = 1.0 / 1e6;
 
-    double throughput = 0., min_throughput = 0., max_throughput = 0., avg_throughput = 0.;
+    double* throughput[1] = 0., min_throughput = 0., max_throughput = 0., avg_throughput = 0.;
     double overlap = 0.;
     double t_pure = 0.;
     double t_ovrlp = 0.;
@@ -337,41 +337,35 @@ Input variables:
     if (timing[MAX].times[PURE] > 0.) {
 	if (Bmark->RUN_MODES[0].type == HalfCollective){
 	    peers = c_info->num_procs / 2;
-	    throughput = (Bmark->scale_bw * SCALE * MEGA * peers) * size / timing[MAX].times[PURE];
+	    throughput[0] = (Bmark->scale_bw * SCALE * MEGA * peers) * size / timing[MAX].times[PURE];
 	} else if (Bmark->RUN_MODES[0].type != ParallelTransferMsgRate)
-            throughput = (Bmark->scale_bw * SCALE * MEGA) * size / timing[MAX].times[PURE];
+            throughput[0] = (Bmark->scale_bw * SCALE * MEGA) * size / timing[MAX].times[PURE];
 #ifndef MPIIO
         else {
             peers = c_info->num_procs / 2;
             msgrate = (Bmark->scale_bw * SCALE * MAX_WIN_SIZE * peers) / timing[MAX].times[PURE];
-            throughput = MEGA * msgrate * size;
+            throughput[0] = MEGA * msgrate * size;
         }
 #endif
     }
 
 
 /* To be moved in a seperate method */
-    const int DO_OUT = (c_info->w_rank == 0) ? 1 : 0;
-    const int GROUP_OUT = (c_info->group_mode > 0) ? 1 : 0;
-
     ierr = 0;
+    /* Fix IMB_1.0.1: NULL all_throughputs before allocation */
+    IMB_v_free((void**)&all_throughputs);
 
-    if (DO_OUT) {
-        /* Fix IMB_1.0.1: NULL all_throughputs before allocation */
-        IMB_v_free((void**)&all_throughputs);
-
-        all_throughputs = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
+    all_throughputs = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
 #ifdef CHECK
-        if (!all_defect) {
-            all_defect = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
-            for (i = 0; i < c_info->w_num_procs; i++)
-                all_defect[i] = 0.;
-        }
+    if (!all_defect) {
+	all_defect = (double*)IMB_v_alloc(c_info->w_num_procs * sizeof(double), "Output 2");
+	for (i = 0; i < c_info->w_num_procs; i++)
+	    all_defect[i] = 0.;
+    }
 #endif
-    } /*if (DO_OUT)*/
 
     /* collect all throughputs  */
-    ierr = MPI_Gather(&throughput, 1, MPI_DOUBLE, all_throughputs, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    ierr = MPI_Gather(throughput, 1, MPI_DOUBLE, all_throughputs, 1, MPI_DOUBLE, 0, MPI_COMM_WORLD);
     MPI_ERRHAND(ierr);
 
 #ifdef CHECK
