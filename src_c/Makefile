@@ -48,7 +48,7 @@
 #  ***************************************************************************
 
 ifeq ($(origin CC),default)
-CC=mpicc
+CC=cc
 endif
 
 BINARY=IMB-$(TARGET)

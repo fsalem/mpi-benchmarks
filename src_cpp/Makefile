@@ -69,10 +69,10 @@ BINARY:=imb
 endif
 
 ifeq ($(origin CC),default)
-CC=mpiicc
+CC=cc
 endif
 ifeq ($(origin CXX),default)
-CXX=mpiicpc
+CXX=CC
 endif
 override CPPFLAGS += -I.
 override CFLAGS += -O0 -Wall -Wextra -pedantic -Wno-long-long
