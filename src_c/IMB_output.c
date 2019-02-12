@@ -880,7 +880,7 @@ void IMB_print_header(int out_format, struct Bench* bmark,
         case OUT_TIME_RANGE_AND_BW:
             line_len += 6;
             strcat(aux_string,
-                   "&#bytes&#repetitions&t_min[usec]&t_max[usec]&t_avg[usec]&min Mbytes/sec&max Mbytes/sec&avg Mbytes/sec&");
+                   "&#bytes&#repetitions&t_min[usec]&t_max[usec]&t_avg[usec]&b_min[MB/s]&b_max[MB/s]&b_avg[MB/s]&");
             break;
 
         case OUT_TIME_RANGE:
