@@ -171,7 +171,7 @@ extern double *all_defect;
 
 /*   WIDTH OF OUTPUT TABLE */
 #define ow_format 13
-#define out_fields 8
+#define out_fields 9
 
 /* IMB 3.1 << */
 /* include Windows case */
