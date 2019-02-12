@@ -343,19 +343,19 @@ Input variables:
 	    msgrate = (Bmark->scale_bw * SCALE * MEGA) * size;
 	}
 	if (Bmark->RUN_MODES[0].type == HalfCollective || Bmark->RUN_MODES[0].type != ParallelTransferMsgRate){
-	    throughput[MIN] = msgrate / timing[MIN].times[PURE];
-	    throughput[MAX] = msgrate / timing[MAX].times[PURE];
+	    throughput[MAX] = msgrate / timing[MIN].times[PURE];
+	    throughput[MIN] = msgrate / timing[MAX].times[PURE];
 	    throughput[AVG] = msgrate / timing[AVG].times[PURE];
 	}
 #ifndef MPIIO
         else {
             peers = c_info->num_procs / 2;
             msgrate = (Bmark->scale_bw * SCALE * MAX_WIN_SIZE * peers) / timing[MIN].times[PURE];
-            throughput[MIN] = MEGA * msgrate * size;
+            throughput[MAX] = MEGA * msgrate * size;
             msgrate = (Bmark->scale_bw * SCALE * MAX_WIN_SIZE * peers) / timing[AVG].times[PURE];
 	    throughput[AVG] = MEGA * msgrate * size;
 	    msgrate = (Bmark->scale_bw * SCALE * MAX_WIN_SIZE * peers) / timing[MAX].times[PURE];
-	    throughput[MAX] = MEGA * msgrate * size;
+	    throughput[MIN] = MEGA * msgrate * size;
         }
 #endif
     }
